@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+		<link rel="stylesheet" href="lib/angular/ng-scrollbar.css">
+		<link rel="stylesheet" href="app.css">
+	</head>
+	<body id="ng-app" ng-app="crog">
+		<div class="pure-g" ng-controller="AuthCtrl">
+
+			<div class="pure-u-1-2" ng-scrollbar>
+				<form class="pure-form" ng-if="!settings.configured">
+					<input type="text" placeholder="GitHub Token" ng-model="settings.token">
+					<input type="text" placeholder="Owner" ng-model="settings.owner">
+					<input type="text" placeholder="Repository" ng-model="settings.repo">
+					<button class="pure-button pure-button-primary" ng-click="submitSetting()">SUBMIT</button>
+				</form>
+				<div ng-if="settings.configured">
+					<button class="pure-button" ng-click="resetSetting()">RECONFIGURE</button>
+					<button class="pure-button" ng-click="loadComments()">RELOAD COMMENTS</button>
+					<button class="pure-button" ng-click="toggleUserCommentCount()"
+						ng-class="showUserCommentCount ? 'pure-button-active' : ''">COUNT</button>
+					<table ng-if="showUserCommentCount">
+						<thead>
+							<td>NAME</td>
+							<td>TOTAL</td>
+							<td>RECENT</td>
+						</thead>
+						<tbody>
+							<tr ng-repeat="count in userCommentCount | orderBy:'-recent'">
+								<td ng-bind="count.login"></td>
+								<td ng-bind="count.total"></td>
+								<td ng-bind="count.recent"></td>
+							</tr>
+						</tbody>
+					</table>
+					<ol>
+						<li ng-repeat="commit in commits">
+							<dt ng-cloak>
+								{{commit.info.author.login}}
+								commited at
+								{{commit.info.commit.author.date}}
+								:<br>
+								<a ng-href="{{commit.info.html_url}}" target="_blank">
+									{{commit.info.commit.message}}
+								</a>
+							</dt>
+							<dd>
+								<ul>
+									<li ng-repeat="comment in commit.comments | orderBy:['line', 'create_at'] ">
+										<dt><a ng-href="{{comment.html_url}}" target="_blank">
+											{{comment.user.login}}
+											comment on
+											{{comment.line ? ('LINE ' + comment.line) : 'COMMIT'}}
+											at
+											{{comment.created_at}}
+											:
+										</a></dt>
+										<dd ng-click="comment.path ? loadFile(comment.path, comment.commit_id) : null">
+											{{comment.body}}
+										</dd>
+									</li>
+								</ul>
+							</dd>
+						</li>
+					</ol>
+				</div>
+			</div>
+
+			<div class="pure-u-1-2 code-viewer-wrap" ng-scrollbar>
+				<pre class="code-viewer" ng-bind="fileContent"></pre>
+			</div>
+
+		</div>
+		
+		<script src="lib/angular/angular.js"></script>
+		<script src="lib/angular/angular-local-storage.js"></script>
+		<script src="lib/angular/angular-link-header.js"></script>
+		<script src="lib/angular/angular-utf8-base64.js"></script>
+		<script src="lib/angular/ng-scrollbar.js"></script>
+		<script src="app.js"></script>
+	</body>
+</html>
