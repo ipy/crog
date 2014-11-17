@@ -51,6 +51,8 @@
 								<ul>
 									<li ng-repeat="comment in commit.comments | orderBy:['line', 'created_at'] ">
 										<dt>
+											<img ng-src="{{comment.user.avatar_url}}" alt=""
+												width="24" height="24">
 											{{comment.user.login}}
 											comment on
 											{{comment.line ? ('LINE ' + comment.line) : 'COMMIT'}}

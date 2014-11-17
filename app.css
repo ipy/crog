@@ -1,9 +1,14 @@
 dt {
 	font-size: 12px;
 	margin-top: 10px;
+	vertical-align: middle;
+}
+dt img {
+	vertical-align: middle;
 }
 dd {
 	font-size: 16px;
+	vertical-align: middle;
 }
 ol, ul {
 	margin-top: 20px;
