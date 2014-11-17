@@ -17,9 +17,9 @@ angular.module('crog', ['LocalStorageModule', 'LinkHeaderParser', 'ab-base64', '
 	return Setting;
 }])
 .service('GitHubAPI', ['$http', '$q', 'Setting', 'linkHeaderParse', function($http, $q, setting, linkHeaderParse){
-	$http.defaults.headers.common['Authorization'] = 'token ' + setting().token;
 	var _baseUrl = 'https://api.github.com';
 	var requestAPI = function (method, api, data) {
+		$http.defaults.headers.common['Authorization'] = 'token ' + setting().token;
 		return $http({
 			url: _baseUrl + api,
 			method: (method || 'get').toUpperCase(),
