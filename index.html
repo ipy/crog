@@ -49,18 +49,21 @@
 							</dt>
 							<dd>
 								<ul>
-									<li ng-repeat="comment in commit.comments | orderBy:['line', 'create_at'] ">
-										<dt><a ng-href="{{comment.html_url}}" target="_blank"
-										    ng-click="loadFile(comment.path, comment.commit_id, comment.line)">
+									<li ng-repeat="comment in commit.comments | orderBy:['line', 'created_at'] ">
+										<dt>
 											{{comment.user.login}}
 											comment on
 											{{comment.line ? ('LINE ' + comment.line) : 'COMMIT'}}
+											{{comment.path ? 'of ' + comment.path : ''}}
 											at
 											{{comment.created_at}}
 											:
-										</a></dt>
+										</dt>
 										<dd>
-											{{comment.body}}
+											<a ng-href="{{comment.html_url}}" target="_blank"
+										    ng-click="loadFile(comment.path, comment.commit_id, comment.line)">
+												{{comment.body}}
+											</a>
 										</dd>
 									</li>
 								</ul>
