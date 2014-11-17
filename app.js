@@ -1,4 +1,18 @@
 angular.module('crog', ['LocalStorageModule', 'LinkHeaderParser', 'ab-base64', 'ngScrollbar'])
+.directive('a', function() {
+    return {
+        restrict: 'E',
+        link: function(scope, elem, attrs) {
+            if(attrs.ngClick || attrs.href === '' || attrs.href === '#'){
+                elem.on('click', function(e){
+                	if (e.which === 1) {
+                		e.preventDefault();
+                	}
+                });
+            }
+        }
+   };
+})
 .service('Setting', ['localStorageService', function(localStorageService){
 	var _settings = localStorageService.get('settings');
 	if (!_settings) {
@@ -16,7 +30,8 @@ angular.module('crog', ['LocalStorageModule', 'LinkHeaderParser', 'ab-base64', '
 	};
 	return Setting;
 }])
-.service('GitHubAPI', ['$http', '$q', 'Setting', 'linkHeaderParse', function($http, $q, setting, linkHeaderParse){
+.service('GitHubAPI', ['$http', '$q', 'Setting', 'linkHeaderParse',
+	function($http, $q, setting, linkHeaderParse){
 	var _baseUrl = 'https://api.github.com';
 	var requestAPI = function (method, api, data) {
 		$http.defaults.headers.common['Authorization'] = 'token ' + setting().token;
@@ -103,7 +118,8 @@ angular.module('crog', ['LocalStorageModule', 'LinkHeaderParser', 'ab-base64', '
 		return requestAPI('get',  '/repos/' + owner + '/' + repo + '/contents/' + path, {path: path, ref: ref}).then(function (res) {return res.data;});
 	}
 }])
-.controller('AuthCtrl', ['$scope', 'Setting', 'GitHubAPI', 'base64', function ($scope, setting, GitHubAPI, base64){
+.controller('AuthCtrl', ['$scope', '$sce', 'Setting', 'GitHubAPI', 'base64',
+	function ($scope, $sce, setting, GitHubAPI, base64){
 	$scope.settings = setting();
 	$scope.commits = null;
 	$scope.submitSetting = function () {
@@ -167,10 +183,13 @@ angular.module('crog', ['LocalStorageModule', 'LinkHeaderParser', 'ab-base64', '
 		$scope.showUserCommentCount = !$scope.showUserCommentCount;
 	};
 	$scope.fileContent = null;
-	$scope.loadFile = function (path, ref) {
+	$scope.loadFile = function (path, ref, lineNo) {
 		GitHubAPI.getContent(setting().owner, setting().repo, path, ref).then(function (data) {
-			content = base64.decode(data.content);
-			$scope.fileContent = content;
+			var lineArray = base64.decode(data.content).split('\n');
+			$scope.fileContent = lineArray.splice(lineNo - 11, 21).join('\n');
 		});
 	};
+	// $scope.viewUrl = function (url) {
+	// 	$scope.currentViewUrl = $sce.trustAsResourceUrl(url);
+	// };
 }])

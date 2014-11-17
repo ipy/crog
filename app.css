@@ -14,8 +14,8 @@ li {
 body {
 	height: 100%;
 }
-/*.code-viewer-wrap {
+.code-viewer-wrap {
 	position: fixed;
 	background: #ddd;
 	height: 100%;
-}*/
+}

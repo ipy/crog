@@ -50,7 +50,8 @@
 							<dd>
 								<ul>
 									<li ng-repeat="comment in commit.comments | orderBy:['line', 'create_at'] ">
-										<dt><a ng-href="{{comment.html_url}}" target="_blank">
+										<dt><a ng-href="{{comment.html_url}}" target="_blank"
+										    ng-click="loadFile(comment.path, comment.commit_id, comment.line)">
 											{{comment.user.login}}
 											comment on
 											{{comment.line ? ('LINE ' + comment.line) : 'COMMIT'}}
@@ -58,7 +59,7 @@
 											{{comment.created_at}}
 											:
 										</a></dt>
-										<dd ng-click="comment.path ? loadFile(comment.path, comment.commit_id) : null">
+										<dd>
 											{{comment.body}}
 										</dd>
 									</li>
@@ -69,7 +70,7 @@
 				</div>
 			</div>
 
-			<div class="pure-u-1-2 code-viewer-wrap" ng-scrollbar>
+			<div class="pure-u-1-2 code-viewer-wrapper" ng-scrollbar>
 				<pre class="code-viewer" ng-bind="fileContent"></pre>
 			</div>
 
