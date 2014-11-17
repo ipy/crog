@@ -70,8 +70,8 @@
 				</div>
 			</div>
 
-			<div class="pure-u-1-2 code-viewer-wrapper" ng-scrollbar>
-				<pre class="code-viewer" ng-bind="fileContent"></pre>
+			<div class="pure-u-1-2 code-viewer-wrap">
+			    <div hljs no-escape source="fileContent"></div>
 			</div>
 
 		</div>
@@ -80,7 +80,11 @@
 		<script src="lib/angular/angular-local-storage.js"></script>
 		<script src="lib/angular/angular-link-header.js"></script>
 		<script src="lib/angular/angular-utf8-base64.js"></script>
+		<script src="lib/angular/angular-highlightjs.js"></script>
 		<script src="lib/angular/ng-scrollbar.js"></script>
 		<script src="app.js"></script>
+		<script src="lib/highlight.min.js"></script>
+
+		<link rel="stylesheet" href="lib/github.min.css">
 	</body>
 </html>

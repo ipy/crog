@@ -1,4 +1,9 @@
-angular.module('crog', ['LocalStorageModule', 'LinkHeaderParser', 'ab-base64', 'ngScrollbar'])
+angular.module('crog', ['LocalStorageModule', 'LinkHeaderParser', 'ab-base64', 'ngScrollbar', 'hljs'])
+.filter('newline', function () {
+    return function(text) {
+        return text.replace(/\n/g, '<br/>');
+    }
+})
 .directive('a', function() {
     return {
         restrict: 'E',
@@ -186,6 +191,7 @@ angular.module('crog', ['LocalStorageModule', 'LinkHeaderParser', 'ab-base64', '
 	$scope.loadFile = function (path, ref, lineNo) {
 		GitHubAPI.getContent(setting().owner, setting().repo, path, ref).then(function (data) {
 			var lineArray = base64.decode(data.content).split('\n');
+			// lineArray[lineNo + 1] = '<span class="code-line">' + lineArray[lineNo + 1] + '</span>';
 			$scope.fileContent = lineArray.splice(lineNo - 11, 21).join('\n');
 		});
 	};
