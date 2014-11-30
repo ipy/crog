@@ -1,23 +1,36 @@
-angular.module('crog', ['LocalStorageModule', 'LinkHeaderParser', 'ab-base64', 'ngScrollbar', 'hljs'])
+angular.module('crog', ['LocalStorageModule', 'LinkHeaderParser', 'ab-base64', 'ngScrollbar'])
 .filter('newline', function () {
-    return function(text) {
-        return text.replace(/\n/g, '<br/>');
-    }
+  return function(text) {
+    return text.replace(/\n/g, '<br/>');
+  }
 })
 .directive('a', function() {
-    return {
-        restrict: 'E',
-        link: function(scope, elem, attrs) {
-            if(attrs.ngClick || attrs.href === '' || attrs.href === '#'){
-                elem.on('click', function(e){
-                	if (e.which === 1) {
-                		e.preventDefault();
-                	}
-                });
-            }
-        }
-   };
+  return {
+    restrict: 'E',
+    link: function(scope, elem, attrs) {
+      if(attrs.ngClick || attrs.href === '' || attrs.href === '#'){
+        elem.on('click', function(e){
+        	if (e.which === 1) {
+        		e.preventDefault();
+        	}
+        });
+      }
+    }
+ };
 })
+.directive('sh', [function(){
+	// Runs during compile
+	return {
+	  link: function (scope, element, attr) {
+      scope.$watch(attr.sh, function (code) {
+      	if (code) {
+      		element.html('<pre class="brush:js;highlight:10">'+code+'</pre>');
+      		SyntaxHighlighter.highlight();
+      	}
+      });
+	  }
+	};
+}])
 .service('Setting', ['localStorageService', function(localStorageService){
 	var _settings = localStorageService.get('settings');
 	if (!_settings) {

@@ -24,10 +24,3 @@ body {
 	background: #ddd;
 	height: 100%;
 }
-.code-viewer {
-	height: 100%;
-}
-.center-line {
-	position: relative;
-	top: -390px;
-}
