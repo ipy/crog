@@ -1,4 +1,4 @@
-angular.module('crog', ['LocalStorageModule', 'LinkHeaderParser', 'ab-base64', 'ngScrollbar'])
+angular.module('crog', ['LocalStorageModule', 'LinkHeaderParser', 'ab-base64', 'ngScrollbar', 'angular-loading-bar', 'ngAnimate'])
 .filter('newline', function () {
   return function(text) {
     return text.replace(/\n/g, '<br/>');
